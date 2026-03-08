@@ -116,6 +116,8 @@ function renderPanels() {
 
     players.forEach((player) => {
 
+    if(player.id === voter.id) return;
+
       html += `
         <div class="vote-row">
           <div>${player.name}</div>
@@ -127,12 +129,8 @@ function renderPanels() {
     });
 
     html += `
-      <button onclick="saveVotes('${voter.name}')">Zapisz oceny</button>
-      <button class="absence-btn"
-      onclick="markAbsent('${voter.id}')">
-      Nieobecność (-20)
-      </button>
-    `;
+  <button onclick="saveVotes('${voter.name}')">Zapisz oceny</button>
+`;
 
     card.innerHTML = html;
     panelsDiv.appendChild(card);
