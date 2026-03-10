@@ -150,3 +150,42 @@ button:hover {
 .absence-btn:hover {
   background: #662929;
 }
+/* Karty graczy w rankingu */
+#rankingTable tr {
+  background: linear-gradient(45deg, #1e293b, #1d3254);
+}
+
+/* Zaokrąglenia kart */
+#rankingTable tr td:first-child {
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+}
+
+#rankingTable tr td:last-child {
+  border-top-right-radius: 12px;
+  border-bottom-right-radius: 12px;
+}
+/* 1 miejsce - złoto */
+#rankingTable tr:nth-child(2) {
+  background: linear-gradient(90deg, #bd770d, #bd960b);
+  color: black;
+  font-weight: bold;
+}
+
+/* 2 miejsce - srebro */
+#rankingTable tr:nth-child(3) {
+  background: linear-gradient(90deg, #9ca3af, #d1d5db);
+  color: black;
+  font-weight: bold;
+}
+
+/* 3 miejsce - brąz */
+#rankingTable tr:nth-child(4) {
+  background: linear-gradient(90deg, #92400e, #b45309);
+  color: white;
+  font-weight: bold;
+}
+/* Reszta graczy */
+#rankingTable tr:nth-child(n+5) {
+  background: linear-gradient(45deg, #1e293b, #1d3254);
+}
