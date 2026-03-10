@@ -1,7 +1,7 @@
 /* Body i container */
 body {
   font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(45deg, #0f172a, #150b2e);
+  background: linear-gradient(45deg, #0f172a, #0e0f21);
   color: #f1f5f9;
   margin: 0;
 }
@@ -137,7 +137,7 @@ button:hover {
 .absence-btn {
   background: #7d4040;
   margin-top: 10px;
-  width: 40%;
+  width: 100%;
   font-weight: bold;
 }
 
