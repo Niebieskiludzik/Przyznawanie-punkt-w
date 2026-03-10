@@ -8,7 +8,6 @@ const supabase = window.supabase.createClient(
 let players = [];
 let currentRoundId = null;
 let yesterdayRatings = {};
-let votersDone = new Set();
 
 const datePicker = document.getElementById('datePicker');
 const rankingTable = document.getElementById('rankingTable');
@@ -22,13 +21,10 @@ document.getElementById('addPlayerBtn').addEventListener('click', addPlayer);
 async function ensureRound(date) {
 
   const { data } = await supabase
-  .from('votes')
-  .select(`
-  score,
-  player_id,
-  players:player_id(name)
-  `)
-  .gte('created_at', start.toISOString());
+    .from('rounds')
+    .select('*')
+    .eq('round_date', date)
+    .single();
 
   if (!data) {
 
@@ -58,17 +54,6 @@ async function loadPlayers() {
 
   renderRanking();
   renderPanels();
-}
-
-async function loadVotesStatus() {
-
-  const { data } = await supabase
-    .from('votes')
-    .select('voter_name')
-    .eq('round_id', currentRoundId);
-
-  votersDone = new Set(data?.map(v => v.voter_name));
-
 }
 
 async function loadYesterdayRatings() {
@@ -127,17 +112,9 @@ function renderPanels() {
     const card = document.createElement('div');
     card.className = 'card center';
 
-    let voted = votersDone.has(voter.name);
+    let html = `<h3>${voter.name} ocenia:</h3>`;
 
-    let html = `
-    <h3>
-    ${voter.name} ocenia
-    ${voted ? "✅" : "❌"}
-    </h3>`;
-    
     players.forEach((player) => {
-
-    if(player.id === voter.id) return;
 
       html += `
         <div class="vote-row">
@@ -150,8 +127,12 @@ function renderPanels() {
     });
 
     html += `
-  <button onclick="saveVotes('${voter.name}')">Zapisz oceny</button>
-`;
+      <button onclick="saveVotes('${voter.name}')">Zapisz oceny</button>
+      <button class="absence-btn"
+      onclick="markAbsent('${voter.id}')">
+      Nieobecność (-20)
+      </button>
+    `;
 
     card.innerHTML = html;
     panelsDiv.appendChild(card);
@@ -181,15 +162,13 @@ window.markAbsent = async function (playerId) {
 
 window.saveVotes = async function (voterName) {
 
-  const voter = players.find(p => p.name === voterName);
-
   for (let player of players) {
+
+    const voter = players.find(p => p.name === voterName);
 
     const input = document.getElementById(
       voter.id + '_' + player.id
     );
-
-    if (!input) continue;
 
     if (!input.value) continue;
 
@@ -207,8 +186,6 @@ window.saveVotes = async function (voterName) {
   });
 
   await loadPlayers();
-  await loadMonthlyRanking();
-  await loadVotesStatus();
 
 };
 
@@ -225,80 +202,6 @@ async function addPlayer() {
   await loadPlayers();
 }
 
-async function loadMonthlyRanking(){
-
-const start = new Date();
-start.setDate(1);
-
-const { data } = await supabase
-.from('votes')
-.select(`
-score,
-player_id,
-players(name)
-`)
-.gte('created_at', start.toISOString());
-
-const map = {};
-
-data?.forEach(v => {
-
-if(!map[v.player_id]){
-
-map[v.player_id] = {
-name:v.players.name,
-scores:[]
-};
-
-}
-
-map[v.player_id].scores.push(v.score);
-
-});
-
-const result = Object.values(map).map(p=>{
-
-const avg = p.scores.reduce((a,b)=>a+b,0)/p.scores.length;
-
-return {
-name:p.name,
-score:avg
-};
-
-});
-
-result.sort((a,b)=>b.score-a.score);
-
-renderMonthly(result);
-
-}
-
-function renderMonthly(players){
-
-const table = document.getElementById("monthlyRanking");
-
-table.innerHTML=`
-<tr>
-<th>#</th>
-<th>Gracz</th>
-<th>Średnia</th>
-</tr>
-`;
-
-players.forEach((p,i)=>{
-
-table.innerHTML+=`
-<tr>
-<td>${i+1}</td>
-<td>${p.name}</td>
-<td>${p.score.toFixed(2)}</td>
-</tr>
-`;
-
-});
-
-}
-
 async function init() {
 
   console.log('INIT START');
@@ -307,15 +210,7 @@ async function init() {
 
   await loadYesterdayRatings();
 
-  await loadVotesStatus();
-  
   await loadPlayers();
-  
-  await loadMonthlyRanking();
-  
-  await loadVotesStatus();
-
-  await loadMonthlyRanking();
 
 }
 
