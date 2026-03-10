@@ -36,11 +36,13 @@ h1 {
   text-align: center;
 }
 
+/* ======================= */
 /* Tabela rankingowa */
 table {
   width: 100%;
   border-collapse: separate;
   border-spacing: 0 12px;
+  position: relative;
 }
 
 th {
@@ -55,6 +57,7 @@ td {
   font-weight: 600;
   text-align: center;
   transition: all 0.3s ease;
+  background: linear-gradient(45deg, #1e293b, #1d3254);
 }
 
 /* Zaokrąglenie wierszy */
@@ -73,51 +76,79 @@ tr:hover td {
   background: #334155;
 }
 
+/* ======================= */
 /* Kolory wierszy */
 tr.gold {
   background: linear-gradient(90deg, #ffd700, #ffb700);
   color: black;
-  position: relative; /* konieczne dla pseudo-elementu glow */
+  position: relative;
 }
 
 tr.silver {
   background: linear-gradient(90deg, #d1d5db, #9ca3af);
   color: black;
+  position: relative;
 }
 
 tr.bronze {
   background: linear-gradient(90deg, #cd7f32, #92400e);
   color: white;
+  position: relative;
 }
 
 tr.other {
   background: linear-gradient(45deg, #1e293b, #1d3254);
   color: white;
+  position: relative;
 }
 
-/* Animacja glow dla lidera */
-tr.gold td:first-child::before,
-tr.gold td:last-child::before {
+/* ======================= */
+/* Glow dla podium */
+
+/* Lider (TOP 1) */
+tr.gold::after {
   content: '';
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
-  z-index: -1;
   border-radius: 16px;
-  box-shadow: 0 0 10px #FFD700, 0 0 20px #FFD700, 0 0 30px #FFEA00;
+  box-shadow: 0 0 15px #FFD700, 0 0 30px #FFD700, 0 0 50px #FFEA00;
   animation: leaderGlow 2.5s infinite;
+  z-index: -1;
 }
 
-/* Animacja kluczowa */
+/* TOP 2 */
+tr.silver::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  border-radius: 16px;
+  box-shadow: 0 0 8px #C0C0C0, 0 0 15px #C0C0C0;
+  animation: podiumGlow 2.5s infinite;
+  z-index: -1;
+}
+
+/* TOP 3 */
+tr.bronze::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  border-radius: 16px;
+  box-shadow: 0 0 6px #A97142, 0 0 12px #A97142;
+  animation: podiumGlow 2.5s infinite;
+  z-index: -1;
+}
+
+/* Animacje */
 @keyframes leaderGlow {
-  0% {
-    box-shadow: 0 0 10px #FFD700, 0 0 20px #FFD700, 0 0 30px #FFEA00;
-  }
-  50% {
-    box-shadow: 0 0 20px #FFD700, 0 0 35px #FFD700, 0 0 50px #FFEA00;
-  }
-  100% {
-    box-shadow: 0 0 10px #FFD700, 0 0 20px #FFD700, 0 0 30px #FFEA00;
-  }
+  0% { box-shadow: 0 0 15px #FFD700, 0 0 30px #FFD700, 0 0 50px #FFEA00; }
+  50% { box-shadow: 0 0 25px #FFD700, 0 0 45px #FFD700, 0 0 60px #FFEA00; }
+  100% { box-shadow: 0 0 15px #FFD700, 0 0 30px #FFD700, 0 0 50px #FFEA00; }
+}
+
+@keyframes podiumGlow {
+  0% { box-shadow: 0 0 8px rgba(255,255,255,0.4); }
+  50% { box-shadow: 0 0 15px rgba(255,255,255,0.6); }
+  100% { box-shadow: 0 0 8px rgba(255,255,255,0.4); }
 }
 
 /* Medale */
