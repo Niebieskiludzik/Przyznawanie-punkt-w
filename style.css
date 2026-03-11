@@ -23,12 +23,7 @@ h1 {
   padding: 25px;
   margin: 20px 0;
   border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-  transition: transform 0.2s ease;
-}
-
-.card:hover {
-  transform: translateY(-4px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
 }
 
 /* Wyśrodkowanie */
@@ -37,12 +32,12 @@ h1 {
 }
 
 /* ============================= */
-/* Tabela rankingowa */
+/* TABELA */
 
 table {
   width: 100%;
   border-collapse: separate;
-  border-spacing: 0 12px;
+  border-spacing: 0 14px;
 }
 
 th {
@@ -56,96 +51,86 @@ td {
   font-size: 24px;
   font-weight: 600;
   text-align: center;
-  background: transparent; /* ważne */
+  background: transparent;
 }
 
 /* ============================= */
-/* Wiersze */
+/* WIERSZE */
 
 tr {
   background: linear-gradient(45deg, #1e293b, #1d3254);
-  transition: all 0.3s ease;
-  border-radius: 14px;
-  position: relative;
-  overflow: hidden;
+  transition: all 0.25s ease;
 }
 
-/* Zaokrąglenie kart */
+/* zaokrąglenia kart */
+
 tr td:first-child {
-  border-top-left-radius: 14px;
-  border-bottom-left-radius: 14px;
+  border-radius: 14px 0 0 14px;
 }
 
 tr td:last-child {
-  border-top-right-radius: 14px;
-  border-bottom-right-radius: 14px;
+  border-radius: 0 14px 14px 0;
 }
 
-/* Hover */
+/* hover */
+
 tr:hover {
-  background: #334155;
+  transform: scale(1.01);
 }
 
 /* ============================= */
-/* TOP 3 – jeden gradient na cały wiersz */
+/* PODIUM */
 
+/* 🥇 */
 tr.gold {
-  background: linear-gradient(90deg, #ffd700, #ffb700);
+  background: linear-gradient(90deg,#ffd700,#ffb700);
   color: black;
+  box-shadow: 0 0 18px rgba(255,215,0,0.7);
+  animation: goldGlow 2.5s infinite;
 }
 
-tr.gold::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 14px;
-  box-shadow: 0 0 25px rgba(255, 215, 0, 0.9);
-  animation: leaderGlow 2.5s infinite;
-  pointer-events: none;
+/* 🥈 */
+tr.silver {
+  background: linear-gradient(90deg,#e5e7eb,#9ca3af);
+  color: black;
+  box-shadow: 0 0 12px rgba(200,200,200,0.5);
 }
 
-tr.silver::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 14px;
-  box-shadow: 0 0 18px rgba(192,192,192,0.7);
-  pointer-events: none;
-}
-
-tr.bronze::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 14px;
-  box-shadow: 0 0 15px rgba(205,127,50,0.7);
-  pointer-events: none;
+/* 🥉 */
+tr.bronze {
+  background: linear-gradient(90deg,#cd7f32,#92400e);
+  color: white;
+  box-shadow: 0 0 10px rgba(205,127,50,0.5);
 }
 
 /* ============================= */
-/* Animacja lidera */
+/* GLOW LIDERA */
 
-@keyframes leaderGlow {
+@keyframes goldGlow {
+
   0% {
     box-shadow: 0 0 10px rgba(255,215,0,0.4);
   }
+
   50% {
-    box-shadow: 0 0 40px rgba(255,215,0,1);
+    box-shadow: 0 0 30px rgba(255,215,0,0.9);
   }
+
   100% {
     box-shadow: 0 0 10px rgba(255,215,0,0.4);
   }
+
 }
 
 /* ============================= */
-/* Medale */
+/* MEDALE */
 
 .medal {
-  font-size: 30px;
+  font-size: 28px;
 }
 
 /* ============================= */
-/* Różnice punktów */
+/* ZMIANY PUNKTÓW */
 
 .positive {
   color: #22c55e;
@@ -158,7 +143,7 @@ tr.bronze::before {
 }
 
 /* ============================= */
-/* Inputy i przyciski */
+/* INPUTY */
 
 input {
   padding: 8px;
@@ -183,7 +168,7 @@ button:hover {
 }
 
 /* ============================= */
-/* Panele oceniania */
+/* PANELE */
 
 .panel-row {
   display: flex;
@@ -211,14 +196,12 @@ button:hover {
 }
 
 /* ============================= */
-/* Nieobecność */
+/* NIEOBECNOŚĆ */
 
 .absence-btn {
   background: #7d4040;
   margin-top: 10px;
   padding: 8px 14px;
-  width: auto;
-  display: inline-block;
   font-weight: bold;
 }
 
