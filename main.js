@@ -234,6 +234,16 @@ window.login = async function () {
   init();
 };
 
+window.logout = async function () {
+
+  await supabase.auth.signOut();
+
+  alert("Wylogowano");
+
+  location.reload();
+
+};
+
 async function addPlayer() {
 
   const name = document.getElementById('newPlayerName').value;
@@ -253,15 +263,44 @@ async function init() {
 
   const { data } = await supabase.auth.getUser();
 
+  const addPlayerSection = document.getElementById("newPlayerName").parentElement;
+  const logoutBox = document.getElementById("logoutBox");
+
   if (!data.user) {
 
     panelsDiv.style.display = "none";
     loginCard.style.display = "block";
 
+    addPlayerSection.style.display = "none";
+    logoutBox.style.display = "none";
+
+    datePicker.disabled = true;
+
   } else {
 
     panelsDiv.style.display = "block";
     loginCard.style.display = "none";
+
+    logoutBox.style.display = "block";
+
+    datePicker.disabled = false;
+
+    // sprawdzamy czy użytkownik jest adminem
+    const { data: player } = await supabase
+      .from('players')
+      .select('*')
+      .eq('email', data.user.email)
+      .single();
+
+    if (player && player.role === "admin") {
+
+      addPlayerSection.style.display = "block";
+
+    } else {
+
+      addPlayerSection.style.display = "none";
+
+    }
 
   }
 
@@ -270,7 +309,7 @@ async function init() {
   await loadPlayers();
 
 }
-
+  
 await init();
 
 });
