@@ -12,6 +12,7 @@ let yesterdayRatings = {};
 const datePicker = document.getElementById('datePicker');
 const rankingTable = document.getElementById('rankingTable');
 const panelsDiv = document.getElementById('panels');
+const loginCard = document.getElementById('loginCard');
 
 datePicker.value = new Date().toISOString().split('T')[0];
 
@@ -132,14 +133,16 @@ function renderPanels() {
 
     });
 
-html += `</div>`;
+    html += `</div>`;
 
     html += `
-      <button onclick="saveVotes('${voter.name}')">Zapisz oceny</button>
-      <button class="absence-btn"
-      onclick="markAbsent('${voter.id}')">
-      Nieobecność
-      </button>
+      <div class="panel-buttons">
+        <button onclick="saveVotes('${voter.name}')">Zapisz oceny</button>
+        <button class="absence-btn"
+        onclick="markAbsent('${voter.id}')">
+        Nieobecność
+        </button>
+      </div>
     `;
 
     card.innerHTML = html;
@@ -184,7 +187,7 @@ window.saveVotes = async function (voterName) {
       round_id: currentRoundId,
       player_id: player.id,
       voter_name: voterName,
-      score: parseFloat(input.value.replace(",", ".")),
+      score: parseFloat(input.value.replace(",", "."))
     });
 
   }
@@ -195,6 +198,26 @@ window.saveVotes = async function (voterName) {
 
   await loadPlayers();
 
+};
+
+window.login = async function () {
+
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  const { error } = await supabase.auth.signInWithPassword({
+    email: email,
+    password: password
+  });
+
+  if (error) {
+    alert("Błąd logowania");
+    return;
+  }
+
+  alert("Zalogowano!");
+
+  init();
 };
 
 async function addPlayer() {
@@ -214,10 +237,22 @@ async function init() {
 
   console.log('INIT START');
 
+  const { data } = await supabase.auth.getUser();
+
+  if (!data.user) {
+
+    panelsDiv.style.display = "none";
+    loginCard.style.display = "block";
+
+  } else {
+
+    panelsDiv.style.display = "block";
+    loginCard.style.display = "none";
+
+  }
+
   await ensureRound(datePicker.value);
-
   await loadYesterdayRatings();
-
   await loadPlayers();
 
 }
