@@ -288,6 +288,22 @@ button:hover {
 
 }
 
+#loginError{
+
+color:#ef4444;
+font-size:14px;
+
+margin-top:6px;
+
+}
+
+.loading{
+
+opacity:0.7;
+pointer-events:none;
+
+}
+
 .absence-btn {
 
   background:#7d4040;
